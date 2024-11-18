@@ -4,13 +4,10 @@ const bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
 
-// Configuração para processar dados do formulário
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Lista para armazenar empresas cadastradas
 let empresas = [];
 
-// Rota para exibir o formulário e a lista de empresas cadastradas
 app.get("/", (req, res) => {
   let formHtml = `
     <h1>Cadastro de Empresas</h1>
@@ -71,11 +68,9 @@ app.get("/", (req, res) => {
   res.send(formHtml);
 });
 
-// Rota para processar o formulário
 app.post("/cadastrar", (req, res) => {
   const { cnpj, razaoSocial, nomeFantasia, endereco, cidade, uf, cep, email, telefone } = req.body;
 
-  // Validação dos campos
   const erros = [];
   if (!cnpj) erros.push("CNPJ é obrigatório.");
   if (!razaoSocial) erros.push("Razão Social é obrigatória.");
@@ -88,18 +83,18 @@ app.post("/cadastrar", (req, res) => {
   if (!telefone) erros.push("Telefone é obrigatório.");
 
   if (erros.length > 0) {
-    // Retorna os erros ao usuário
+
     res.send(`
       <h1>Erros no Cadastro</h1>
       <ul>${erros.map((erro) => `<li>${erro}</li>`).join("")}</ul>
       <a href="/">Voltar ao formulário</a>
     `);
   } else {
-    // Adiciona a empresa à lista
-    empresas.push({ cnpj, razaoSocial, nomeFantasia, endereco, cidade, uf, cep, email, telefone });
 
-    // Redireciona para a página inicial
-    res.redirect("/");
+        empresas.push({ cnpj, razaoSocial, nomeFantasia, endereco, cidade, uf, cep, email, telefone });
+
+
+        res.redirect("/");
   }
 });
 
